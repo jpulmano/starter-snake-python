@@ -7,4 +7,7 @@ PyYAML==5.3.1
 pyzmq==19.0.1
 scipy==1.5.0
 stable-baselines==2.10.0
-torch==1.2.0
+# torch==1.2.0
+# replace pytorch
+https://download.pytorch.org/whl/cpu/torch-1.1.0-cp37-cp37m-linux_x86_64.whl
+https://download.pytorch.org/whl/cpu/torchvision-0.3.0-cp37-cp37m-linux_x86_64.whl
