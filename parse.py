@@ -16,31 +16,31 @@ if __name__ == '__main__':
         print(snake["head"])
     
     
-    me = json["you"]
+    # me = json["you"]
     
-    my_health = json["you"]["health"]
+    # my_health = json["you"]["health"]
     
-    my_body = json["you"]["body"]
+    # my_body = json["you"]["body"]
     
-    my_head = json["you"]["head"]
+    # my_head = json["you"]["head"]
     
-    my_length = json["you"]["length"]
+    # my_length = json["you"]["length"]
     
-    print('----- Other stuff ------')
-    num_redirected = 2
-    actions = np.random.rand(4) # Walmart Q-values
-    print(actions)
-    action = int(np.argmax(actions))
-    print(action)
-    sort = np.argsort(actions)
-    print(sort)
-    action = sort[-num_redirected]
-    print(action)
+    # print('----- Other stuff ------')
+    # num_redirected = 2
+    # actions = np.random.rand(4) # Walmart Q-values
+    # print(actions)
+    # action = int(np.argmax(actions))
+    # print(action)
+    # sort = np.argsort(actions)
+    # print(sort)
+    # action = sort[-num_redirected]
+    # print(action)
     
-    print('For loop testing\n')
-    for i in range(0, 5):
-        print(i)
-        for j in range(10,15):
-            if j != 11:
-                print(j)
+    # print('For loop testing\n')
+    # for i in range(0, 5):
+    #     print(i)
+    #     for j in range(10,15):
+    #         if j != 11:
+    #             print(j)
             

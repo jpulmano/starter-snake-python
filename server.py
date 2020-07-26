@@ -1,9 +1,13 @@
 import os
 import random
 import cherrypy
+import time
+import json
+import torch
 
 from heuristics import Heuristics
-import json
+from model import make_agent
+from generator import GameGenerator
 
 class Battlesnake(object):
     @cherrypy.expose
@@ -27,6 +31,10 @@ class Battlesnake(object):
         # cherrypy.request.json contains information about the game that's about to be played.
         # TODO: Use this function to decide how your snake is going to look on the board.
         data = cherrypy.request.json
+        
+        # Create a model
+        # agent = make_agent()
+        # print('AGENT', agent)
 
         print("START")
         return "ok"
@@ -39,22 +47,44 @@ class Battlesnake(object):
         # Valid moves are "up", "down", "left", or "right".
 
         json = cherrypy.request.json
-
         possible_moves = ["up", "down", "left", "right"]
 
-        # Choose an action through heuristics
-        heuristics = Heuristics(json)
-        action_index, log_strings = heuristics.run()
+        # ---------------------------------------- 
         
-        action = possible_moves[action_index]
+        # Choose an action through heuristics
+        # heuristics = Heuristics(json)
+        # action_index, log_strings = heuristics.run()
+        
+        # ---------------------------------------- 
+        
+        # Create an agent
+        agent, policy = make_agent()
+    
+        device = torch.device('cpu')
+    
+        # (Old) Get the action our policy should take
+        # _, action, _, _ = policy.act(torch.tensor(100, dtype=torch.float32).to(device), None, None)
+    
+        # Set up the game generator
+        layers = 17
+        height = json["board"]["height"]
+        width = json["board"]["width"]
+        gen = GameGenerator(layers, height, width)
+        
+        # Convert the json
+        agent_input = torch.tensor(gen.make_input(json), dtype=torch.float32)
+        
+        # Get the action
+        start = time.time()
+        with torch.no_grad():
+            action, value = agent.predict(agent_input, deterministic=True)
+        end = time.time()
+
+        print(action)
         
         # Print move
         print("Step {}... Move: {}".format(json['turn'], action))
-        
-        # Check logs
-        # if len(log_strings) > 0:
-        #     for msg in log_strings: 
-        #         print(msg)
+        print("Score: {} calculated in {} seconds".format(value[0].item(), end-start))
         
         return {"move": action}
 
@@ -68,9 +98,9 @@ class Battlesnake(object):
         print("END")
         
         if data["you"] not in data["board"]["snakes"]:
-            print("you lost bruh")
+            print("you lost!")
         else:
-            print("you won bruh!")
+            print("you won!")
             
         return "ok"
 

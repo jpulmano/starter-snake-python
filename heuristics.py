@@ -204,7 +204,7 @@ class Heuristics:
         # Counter
         bad_moves = 0
         
-         # Get dimensions
+        # Get dimensions
         height_min, width_min, height_max, width_max = 0, 0, self.height-1, self.width-1
         
         for a in [UP, DOWN, LEFT, RIGHT]: # Note to self: don't confuse 'action' with 'a' and CHANGE VARIABLE NAMES
