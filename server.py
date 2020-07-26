@@ -31,10 +31,6 @@ class Battlesnake(object):
         # cherrypy.request.json contains information about the game that's about to be played.
         # TODO: Use this function to decide how your snake is going to look on the board.
         data = cherrypy.request.json
-        
-        # Create a model
-        # agent = make_agent()
-        # print('AGENT', agent)
 
         print("START")
         return "ok"
@@ -48,6 +44,9 @@ class Battlesnake(object):
 
         json = cherrypy.request.json
         possible_moves = ["up", "down", "left", "right"]
+        action = "up"
+        return {"move": action}
+
 
         # ---------------------------------------- 
         
@@ -58,36 +57,34 @@ class Battlesnake(object):
         # ---------------------------------------- 
         
         # Create an agent
-        agent, policy = make_agent()
+        # agent, policy = make_agent()
     
-        device = torch.device('cpu')
+        # device = torch.device('cpu')
     
         # (Old) Get the action our policy should take
         # _, action, _, _ = policy.act(torch.tensor(100, dtype=torch.float32).to(device), None, None)
     
         # Set up the game generator
-        layers = 17
-        height = json["board"]["height"]
-        width = json["board"]["width"]
-        gen = GameGenerator(layers, height, width)
+        # layers = 17
+        # height = json["board"]["height"]
+        # width = json["board"]["width"]
+        # gen = GameGenerator(layers, height, width)
         
-        # Convert the json
-        agent_input = torch.tensor(gen.make_input(json), dtype=torch.float32)
+        # # Convert the json
+        # agent_input = torch.tensor(gen.make_input(json), dtype=torch.float32)
         
-        # Get the action
-        start = time.time()
-        with torch.no_grad():
-            action, value = agent.predict(agent_input, deterministic=True)
-        end = time.time()
+        # # Get the action
+        # start = time.time()
+        # with torch.no_grad():
+        #     action, value = agent.predict(agent_input, deterministic=True)
+        # end = time.time()
 
-        print(action)
+        # print(action)
         
-        # Print move
-        print("Step {}... Move: {}".format(json['turn'], action))
-        print("Score: {} calculated in {} seconds".format(value[0].item(), end-start))
+        # # Print move
+        # print("Step {}... Move: {}".format(json['turn'], action))
+        # print("Score: {} calculated in {} seconds".format(value[0].item(), end-start))
         
-        return {"move": action}
-
     @cherrypy.expose
     @cherrypy.tools.json_in()
     def end(self):
