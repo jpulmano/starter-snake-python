@@ -46,7 +46,6 @@ class Battlesnake(object):
         self.policy.eval()
         
         # Try using symmetry
-        # self.generator = GameGenerator(self.layers, self.width, self.height)
         self.generator = GameGenerator(self.layers, self.width, self.height, True)
 
         print("Made policy and game generator")
@@ -90,7 +89,7 @@ class Battlesnake(object):
         
         # Check model action with heuristics
         heuristics = Heuristics(data)
-        certain_death_actions, head_to_head_actions = heuristics.run()
+        certain_death_actions = heuristics.run()
         
         legal_actions = [a for a in actions if a not in certain_death_actions]
         
@@ -99,8 +98,7 @@ class Battlesnake(object):
               [possible_moves[a] for a in list(certain_death_actions)]
         )
         
-        # If our model tried to kill us, print it 
-        # and choose a new action
+        # If our model tried to kill us, print it and choose a new action
         if action_index in certain_death_actions:
             move = possible_moves[action_index]
             log_message = certain_death_actions[action_index]
@@ -146,11 +144,13 @@ class Battlesnake(object):
 
         print("END")
         
+        # Print result
         if data["you"] not in data["board"]["snakes"]:
             print("You lost :(")
         else:
             print("You won :D")
             
+        # Print stats
         print("You chose a dying move {} out of {} times, or {:.2f}".format(
             self.deaths, self.total_moves, self.deaths/self.total_moves
         ))

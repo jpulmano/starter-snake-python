@@ -46,21 +46,22 @@ class GameGenerator():
                     transpose_rotate = True
                 if diff_x == -1: # Facing left
                     transpose = True
-                    
+
+        # Note: Up and down are flipped in the actual game
         if transpose:
             if action == LEFT:
-                return DOWN # ORIGINALLY UP
+                return DOWN
             if action == RIGHT:
-                return UP # ORIGINALLY DOWN
+                return UP
             if action == UP: 
                 return LEFT
             if action == DOWN:
                 return RIGHT
         if transpose_rotate:
             if action == LEFT:
-                return DOWN # ORIGINALLY UP
+                return DOWN
             if action == RIGHT:
-                return UP # ORIGINALLY DOWN
+                return UP
             if action == UP:
                 return RIGHT
             if action == DOWN:
