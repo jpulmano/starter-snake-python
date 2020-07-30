@@ -2,18 +2,22 @@ import json
 import numpy as np
 
 if __name__ == '__main__':
-    with open('data.json') as json_file:
-        json = json.load(json_file)
     
-    height = json["board"]["height"]
-    width = json["board"]["width"]
-    foods = json["board"]["food"]
+    obs = np.ones((1, 17, 23, 23))
     
-    snakes = json["board"]["snakes"]
+    print(obs[0, 5, :, :] + obs[0, 1, :, :])
+    # with open('data.json') as json_file:
+    #     json = json.load(json_file)
     
-    print('Snake heads:')
-    for snake in snakes:
-        print(snake["head"])
+    # height = json["board"]["height"]
+    # width = json["board"]["width"]
+    # foods = json["board"]["food"]
+    
+    # snakes = json["board"]["snakes"]
+    
+    # print('Snake heads:')
+    # for snake in snakes:
+    #     print(snake["head"])
     
     
     # me = json["you"]

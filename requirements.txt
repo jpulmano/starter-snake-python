@@ -1,13 +1,20 @@
+# Base
 CherryPy==18.5.0
-gym==0.17.2
 numpy==1.18.4
-pyparsing==2.4.7
-pytz==2020.1
+
+# Other stuff
+gym==0.17.2
 PyYAML==5.3.1
-pyzmq==19.0.1
-scipy==1.5.0
 stable-baselines==2.10.0
+tqdm==4.46.1
+matplotlib==3.2.2
+# opencv-python==4.2.0.34
+
+# tensorflow
+tensorflow==1.14
+setuptools==41.0.0
+
+# pytorch is too big, use CPU stuff
 # torch==1.2.0
-# replace pytorch
 https://download.pytorch.org/whl/cpu/torch-1.1.0-cp37-cp37m-linux_x86_64.whl
 https://download.pytorch.org/whl/cpu/torchvision-0.3.0-cp37-cp37m-linux_x86_64.whl
