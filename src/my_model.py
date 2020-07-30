@@ -33,6 +33,8 @@ class SnakePolicyBase(NNBase):
         
         # We'll define a 3-stack CNN with leaky_relu activations and a batchnorm
         # here.
+        
+        # Stride is changed from 3 to 2 in some snakes: (e.g. weights-400iter-*.pt)
         self.base = nn.Sequential(
             nn.Conv2d(17, 32, 3),
             nn.LeakyReLU(),

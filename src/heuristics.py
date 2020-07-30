@@ -6,9 +6,9 @@ UP, DOWN, LEFT, RIGHT = 0, 1, 2, 3
 
 class Heuristics:
     
-    '''
-    The BattlesnakeHeuristics class defines handcrafted rules for the snake.
-    '''
+    """
+    The Heuristics class defines handcrafted rules for the snake.
+    """
     
     def __init__(self, json):
         self.height = json["board"]["height"]
@@ -23,9 +23,12 @@ class Heuristics:
     
     # ------------------------------------------------------------------------
     
-    # Helper function to update coordinates
     
     def update_coords(self, i, j, action):
+        """
+        Helper function to update coordinates
+        """
+        
         
         if action == UP:
             j += 1
@@ -40,12 +43,11 @@ class Heuristics:
     
     # ------------------------------------------------------------------------
     
-    # Check if food is one or two blocks next to our head
-    
     def go_to_food_if_close(self):
-        '''
+        """
         Example heuristic to move towards food if it's close to you.
-        '''
+        Check if food is one or two blocks next to our head
+        """
         
         food_direction = None
         
@@ -66,11 +68,12 @@ class Heuristics:
     
     
     # ------------------------------------------------------------------------
-    
-    # Check if surrounding block to our head (after action) is 
-    # surrounded by any enemy heads
 
     def about_to_go_head_to_head(self, action):
+        """
+        Check if surrounding block to our head (after action) is 
+        surrounded by any enemy heads
+        """
         
         i_head, j_head = self.my_head["x"], self.my_head["y"]
 
@@ -97,9 +100,13 @@ class Heuristics:
 
     # ------------------------------------------------------------------------
     
-    # Check for a forbidden move that would kill us (e.g. going right, move left)
+    
     
     def did_try_to_kill_self(self, action):
+        """
+        Check for a forbidden move that would kill us 
+        (e.g. while already moving right, move left)
+        """
         
         # Return if our body is smol (1 piece only)
         if len(self.my_body) == 1:
@@ -129,10 +136,11 @@ class Heuristics:
         return False
     
     # ------------------------------------------------------------------------
-    
-    # Check if we're leaving the map
 
     def did_try_to_escape(self, action):
+        """
+        Checks if we're leaving the map
+        """
         
         # Get head
         i_head, j_head = self.my_head["x"], self.my_head["y"]
@@ -151,9 +159,25 @@ class Heuristics:
     
     # ------------------------------------------------------------------------
     
-    # Check if we're about to hit another snake
+    
     
     def did_try_to_hit_snake(self, action):
+        """
+        Checks if we're about to hit another snake.
+        
+        NOTE (1): This function does NOT ignore heads, since
+        the snake neck will replace the head piece on the next turn.
+        In any case, hitting another snake's neck on the next turn 
+        will kill us.
+        
+        NOTE (2): This function DOES ignore tails, as tails will move
+        on the next turn, giving our snake a safe square; however, 
+        if a snake just ate food, the tail will remain where it was, 
+        and we will die if we move there. This function will NOT 
+        mark that action as a bad action.
+        
+        TODO: Check if each snake just ate food
+        """
         
         # Get the position of snake head
         i_head, j_head = self.my_head["x"], self.my_head["y"]
@@ -163,7 +187,13 @@ class Heuristics:
 
         # Loop through snakes to see if we're about to collide
         for snake in self.snakes:
+            tail = snake["body"][-1]
             for piece in snake["body"]:
+                # The tail is going to move on the next turn 
+                # (unless the snake just ate food), so ignore it
+                if piece == tail: 
+                    continue
+                
                 x, y = piece["x"], piece["y"]
                 if x == i_head and y == j_head: # Exact match
                     return True
@@ -256,9 +286,14 @@ class Heuristics:
         # Check to see which actions kill us
         for action in [UP, DOWN, LEFT, RIGHT]:
             
-            # Don't hit our own body
+            # Don't perform a forbidden move
             if self.did_try_to_kill_self(action):
                 certain_death_actions[action] = "tried to hit a self"
+                continue
+            
+            # Don't hit any other snake body (including our own)
+            if self.did_try_to_hit_snake(action):
+                certain_death_actions[action] = "tried to hit a snake"
                 continue
 
             # Don't exit the map
