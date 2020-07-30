@@ -250,16 +250,8 @@ class Heuristics:
 
     def run(self):
         
-        log_strings = []
-        action_names = ['UP', 'DOWN', 'LEFT', 'RIGHT']
         actions = [0, 1, 2, 3]
         certain_death_actions = {}
-        # head_to_head_actions = {}
-        
-        # See if we can eat food
-        # food_direction = None
-        # if self.my_health < 50:
-        #     food_direction = self.go_to_food_if_close()
         
         # Check to see which actions kill us
         for action in [UP, DOWN, LEFT, RIGHT]:
@@ -273,15 +265,5 @@ class Heuristics:
             if self.did_try_to_escape(action):
                 certain_death_actions[action] = "tried to escape"
                 continue
-            
-            # Don't die two moves later (not working)
-            # if self.will_die_on_next_move(action):
-            #     certain_death_actions[action] = "will die two moves later"
-            #     continue
-            
-            # Don't (potentially) lose a head-to-head
-            # if self.about_to_go_head_to_head(action):
-            #     certain_death_actions[action] = "might lose head to head"
-            #     head_to_head_actions[action] = "might lose head to head"
 
-        return certain_death_actions # , head_to_head_actions
+        return certain_death_actions
