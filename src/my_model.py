@@ -15,6 +15,10 @@ from collections import deque
 from src.content.pytorch_a2c_ppo_acktr_gail.a2c_ppo_acktr.algo.ppo import PPO
 from src.content.pytorch_a2c_ppo_acktr_gail.a2c_ppo_acktr.model import Policy, NNBase
 
+"""
+Create the model to use for prediction
+"""
+
 def init_cnn(m):
     if getattr(m, 'bias', None) is not None: nn.init.constant_(m.bias, 0)
     if isinstance(m, (nn.Conv2d,nn.Linear)): nn.init.kaiming_normal_(m.weight)
@@ -94,9 +98,20 @@ def create_policy(obs_space, act_space, base):
 
 # ------------------------------------------------------------------------
 
-# Functions specific to the game
 
-def make_policy(layers, width, height, weightsPath):
+def make_policy(layers=17, width=23, height=23, weightsPath="."):
+    """ 
+    Creates the policy based on saved weights 
+    Note: Architecture must be exactly the same 
+    as it was during training.
+    
+    layers: number of layers in gym
+    width: width of each layer in gym
+    height: height of each layer in gym
+    weightsPath: path to saved weights
+    
+    return: policy used for prediction
+    """
     
     observation_space = spaces.Box(low=0,high=255, shape=(layers, width, height), dtype=np.uint8)
     action_space = spaces.Discrete(4)
@@ -108,22 +123,3 @@ def make_policy(layers, width, height, weightsPath):
     policy.eval()
     
     return policy
-
-if __name__ == "__main__":
-    policy = make_policy(17, 23, 23, "weights/weights-200iter.pt")
-    
-    action_index, value = policy.predict(np.zeros((1, 17, 23, 23)), deterministic=True)
-    
-    print(action_index)
-    print(value)
-    
-    print(action_index.cpu().squeeze())
-    print(action_index.item())
-    
-    # obs = np.zeros((1, 17, 23, 23))
-    
-    # print("Snake bodies")
-    # print(obs[0, 1, :, :])
-        
-    # print("Food layer")
-    # print(obs[0, 4, :, :])

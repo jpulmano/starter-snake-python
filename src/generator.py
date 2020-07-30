@@ -4,7 +4,7 @@ import yaml
 import gym
 import torch
 
-# Game generator file provided by cbinners (https://github.com/cbinners/)
+# Game generator file written by cbinners (https://github.com/cbinners/)
 class GameGenerator():
     
     def __init__(self, layers, width, height, use_symmetry=False):
@@ -67,14 +67,6 @@ class GameGenerator():
                 return LEFT
         if flip_y:
             return action 
-            # if action == LEFT:
-            #     return LEFT
-            # if action == RIGHT:
-            #     return RIGHT
-            # if action == UP:
-            #     return DOWN
-            # if action == DOWN:
-            #     return UP
         
         # Added conversion
         if action == UP:
