@@ -117,8 +117,8 @@ class Battlesnake(object):
                 self.lefts += 1
             
             # Choose a different legal action, maybe go head-to-head
-            # if legal_actions:
-            #     action_index = random.choice(legal_actions)
+            if legal_actions:
+                action_index = random.choice(legal_actions)
             # elif head_to_head_actions:
             #     action_index = random.choice(list(head_to_head_actions))
                 
@@ -151,12 +151,13 @@ class Battlesnake(object):
         else:
             print("You won :D")
             
-        print("You chose a dying move {} out of {} times".format(self.deaths, self.total_moves))
+        print("You chose a dying move {} out of {} times, or {:.2f}".format(
+            self.deaths, self.total_moves, self.deaths/self.total_moves
+        ))
         print("Ups: ", self.ups)
         print("Downs: ", self.downs)
         print("Rights: ", self.rights)
         print("Lefts: ", self.lefts)
-        print("That's {:.2f}!".format(self.deaths/self.total_moves))
         
         return "ok"
         

@@ -97,38 +97,36 @@ class Heuristics:
 
     # ------------------------------------------------------------------------
     
-    # Check for a forbidden move (e.g. going right, move left)
+    # Check for a forbidden move that would kill us (e.g. going right, move left)
     
-    # Deprecated by did_try_to_hit_snake
-    
-    # def did_try_to_kill_self(self, action):
+    def did_try_to_kill_self(self, action):
         
-    #     # Return if our body is smol (1 piece only)
-    #     if len(self.my_body) == 1:
-    #         return False
+        # Return if our body is smol (1 piece only)
+        if len(self.my_body) == 1:
+            return False
         
-    #     i_head, j_head = self.my_head["x"], self.my_head["y"]
+        i_head, j_head = self.my_head["x"], self.my_head["y"]
         
-    #     # Get the position of the second piece (body)
-    #     i_body, j_body = self.my_body[1]["x"], self.my_body[1]["y"]
+        # Get the position of the second piece (body)
+        i_body, j_body = self.my_body[1]["x"], self.my_body[1]["y"]
 
-    #     # Calculate the facing direction with the head and the next location
-    #     diff_horiz, diff_vert = i_head - i_body, j_head - j_body
+        # Calculate the facing direction with the head and the next location
+        diff_horiz, diff_vert = i_head - i_body, j_head - j_body
         
-    #     if diff_horiz == -1 and diff_vert == 0: # Left
-    #         if action == RIGHT:
-    #             return True
-    #     elif diff_horiz == 1 and diff_vert == 0: # Right
-    #         if action == LEFT:
-    #             return True 
-    #     elif diff_horiz == 0 and diff_vert == 1: # Up
-    #         if action == DOWN:
-    #             return True
-    #     elif diff_horiz == 0 and diff_vert == -1: # Down
-    #         if action == UP:
-    #             return True
+        if diff_horiz == -1 and diff_vert == 0: # Left
+            if action == RIGHT:
+                return True
+        elif diff_horiz == 1 and diff_vert == 0: # Right
+            if action == LEFT:
+                return True 
+        elif diff_horiz == 0 and diff_vert == 1: # Up
+            if action == DOWN:
+                return True
+        elif diff_horiz == 0 and diff_vert == -1: # Down
+            if action == UP:
+                return True
             
-    #     return False
+        return False
     
     # ------------------------------------------------------------------------
     
@@ -256,7 +254,7 @@ class Heuristics:
         action_names = ['UP', 'DOWN', 'LEFT', 'RIGHT']
         actions = [0, 1, 2, 3]
         certain_death_actions = {}
-        head_to_head_actions = {}
+        # head_to_head_actions = {}
         
         # See if we can eat food
         # food_direction = None
@@ -266,9 +264,9 @@ class Heuristics:
         # Check to see which actions kill us
         for action in [UP, DOWN, LEFT, RIGHT]:
             
-            # Don't hit another snake (including self)
-            if self.did_try_to_hit_snake(action):
-                certain_death_actions[action] = "tried to hit a snake/self"
+            # Don't hit our own body
+            if self.did_try_to_kill_self(action):
+                certain_death_actions[action] = "tried to hit a self"
                 continue
 
             # Don't exit the map
@@ -276,14 +274,14 @@ class Heuristics:
                 certain_death_actions[action] = "tried to escape"
                 continue
             
-            # Don't die two moves later
+            # Don't die two moves later (not working)
             # if self.will_die_on_next_move(action):
             #     certain_death_actions[action] = "will die two moves later"
             #     continue
             
             # Don't (potentially) lose a head-to-head
-            if self.about_to_go_head_to_head(action):
-                certain_death_actions[action] = "might lose head to head"
-                head_to_head_actions[action] = "might lose head to head"
+            # if self.about_to_go_head_to_head(action):
+            #     certain_death_actions[action] = "might lose head to head"
+            #     head_to_head_actions[action] = "might lose head to head"
 
-        return certain_death_actions, head_to_head_actions
+        return certain_death_actions # , head_to_head_actions
