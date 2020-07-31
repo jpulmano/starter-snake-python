@@ -126,12 +126,12 @@ class Battlesnake(object):
         action = possible_moves[action_index]
         
         # Print logs
-        # print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
-        #     data['turn'], 
-        #     action,
-        #     end-start,
-        #     value[0].item()
-        # ))
+        print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
+            data['turn'], 
+            action,
+            end-start,
+            value[0].item()
+        ))
         
         return {"move": action}
 
@@ -150,10 +150,10 @@ class Battlesnake(object):
         else:
             print("You won :D")
             
-        # Print snake names
-        print("Snake names:")
-        for snake in data["board"]["snakes"]:
-            print(snake["name"])
+        # # Print snake names
+        # print("Snake names:")
+        # for snake in data["board"]["snakes"]:
+        #     print(snake["name"])
             
         # Print stats
         print("You chose a dying move {} out of {} times, or {:.2f}".format(
