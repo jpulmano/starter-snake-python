@@ -21,7 +21,7 @@ class Battlesnake(object):
         return {
             "apiversion": "1",
             "author": "jpulmano",
-            "color": "#FE6E00",
+            "color": "#FF8000",
             "head": "shac-tiger-king",
             "tail": "shac-tiger-tail"
         }
@@ -42,7 +42,8 @@ class Battlesnake(object):
         self.height = 23
         
         # Make our policy from previous weights
-        self.policy = make_policy(self.layers, self.width, self.height, "weights/weights-1000iter-aggressive.pt")
+        path = "weights/weights-1000iter-aggressive.pt"
+        self.policy = make_policy(self.layers, self.width, self.height, path)
         self.policy.eval()
         
         # Try using symmetry
@@ -149,12 +150,7 @@ class Battlesnake(object):
             print("You lost :(")
         else:
             print("You won :D")
-            
-        # # Print snake names
-        # print("Snake names:")
-        # for snake in data["board"]["snakes"]:
-        #     print(snake["name"])
-            
+        
         # Print stats
         print("You chose a dying move {} out of {} times, or {:.2f}".format(
             self.deaths, self.total_moves, self.deaths/self.total_moves
