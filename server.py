@@ -77,6 +77,9 @@ class Battlesnake(object):
         actions = [0, 1, 2, 3]
         possible_moves = ["up", "down", "left", "right"]
         
+        print_move_logs = False
+        print_death_logs = True
+        
         # Convert the JSON to a format needed by agent/policy
         obs = self.generator.make_input(data)
         converted_input = torch.tensor(obs, dtype=torch.float32)
@@ -94,16 +97,13 @@ class Battlesnake(object):
         
         legal_actions = [a for a in actions if a not in certain_death_actions]
         
-        print("Model action: {}".format(possible_moves[action_index]))
-        print("Certain death actions: ", 
-              [possible_moves[a] for a in list(certain_death_actions)]
-        )
-        
         # If our model tried to kill us, print it and choose a new action
         if action_index in certain_death_actions:
             move = possible_moves[action_index]
             log_message = certain_death_actions[action_index]
-            print("Potential bad move: {}, {}".format(move, log_message))
+            
+            if print_death_logs:
+                print("Step {} – Bad move: {}, {}".format(data['turn'], move, log_message))
             
             self.deaths += 1
             if move == 'up':
@@ -127,12 +127,13 @@ class Battlesnake(object):
         action = possible_moves[action_index]
         
         # Print logs
-        print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
-            data['turn'], 
-            action,
-            end-start,
-            value[0].item()
-        ))
+        if print_move_logs:
+            print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
+                data['turn'], 
+                action,
+                end-start,
+                value[0].item()
+            ))
         
         return {"move": action}
 
