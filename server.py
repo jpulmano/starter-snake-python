@@ -133,7 +133,7 @@ class Battlesnake(object):
         #     value[0].item()
         # ))
         
-        return {"move": action, "shout": "probably gonna eat you!"}
+        return {"move": action}
 
     @cherrypy.expose
     @cherrypy.tools.json_in()
