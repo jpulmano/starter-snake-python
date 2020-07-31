@@ -42,7 +42,7 @@ class Battlesnake(object):
         self.height = 23
         
         # Make our policy from previous weights
-        path = "weights/weights-900iter-aggressive.pt"
+        path = "weights/weights-650iter-aggressive.pt"
         self.policy = make_policy(self.layers, self.width, self.height, path)
         self.policy.eval()
         
