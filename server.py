@@ -21,7 +21,7 @@ class Battlesnake(object):
         return {
             "apiversion": "1",
             "author": "jpulmano",
-            "color": "#DE7E00",
+            "color": "#FE6E00",
             "head": "shac-tiger-king",
             "tail": "shac-tiger-tail"
         }
@@ -126,14 +126,14 @@ class Battlesnake(object):
         action = possible_moves[action_index]
         
         # Print logs
-        print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
-            data['turn'], 
-            action,
-            end-start,
-            value[0].item()
-        ))
+        # print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
+        #     data['turn'], 
+        #     action,
+        #     end-start,
+        #     value[0].item()
+        # ))
         
-        return {"move": action}
+        return {"move": action, "shout": "probably gonna eat you!"}
 
     @cherrypy.expose
     @cherrypy.tools.json_in()
