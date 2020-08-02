@@ -42,7 +42,7 @@ class Battlesnake(object):
         self.height = 23
         
         # Make our policy from previous weights
-        path = "weights/weights-650iter-aggressive.pt"
+        path = "weights/weights-1450iter-aggressive.pt"
         self.policy = make_policy(self.layers, self.width, self.height, path)
         self.policy.eval()
         
@@ -77,9 +77,6 @@ class Battlesnake(object):
         actions = [0, 1, 2, 3]
         possible_moves = ["up", "down", "left", "right"]
         
-        print_move_logs = False
-        print_death_logs = True
-        
         # Convert the JSON to a format needed by agent/policy
         obs = self.generator.make_input(data)
         converted_input = torch.tensor(obs, dtype=torch.float32)
@@ -101,9 +98,8 @@ class Battlesnake(object):
         if action_index in certain_death_actions:
             move = possible_moves[action_index]
             log_message = certain_death_actions[action_index]
-            
-            if print_death_logs:
-                print("Step {} – Bad move: {}, {}".format(data['turn'], move, log_message))
+           
+            print("Step {} – Bad move: {}, {}".format(data['turn'], move, log_message))
             
             self.deaths += 1
             if move == 'up':
@@ -127,8 +123,9 @@ class Battlesnake(object):
         action = possible_moves[action_index]
         
         # Print logs
+        print_move_logs = True
         if print_move_logs:
-            print("Step {}, Move: {}, Dur: {:.3f}s, Move value: {:.3f}".format(
+            print("Step {} | Move: {} | Dur: {:.2f}s | Value: {:.2f}".format(
                 data['turn'], 
                 action,
                 end-start,
